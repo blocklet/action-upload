@@ -2993,7 +2993,7 @@ const exec = __nccwpck_require__(922);
     });
 
     if (accessToken) {
-      exec.exec(`blocklet upload --secret-key ${accessToken}`, [], {
+      exec.exec(`blocklet upload --access-token ${accessToken}`, [], {
         listeners: {
           stderr(err) {
             throw new Error(err.toString());
