@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: <build_your_blocklet> # after build, use `abtnode bundle --create-release` to bundle your blocklet
       - name: Upload to Registry
-        uses: blocklet/action-upload@v0.1
+        uses: blocklet/action-upload@v0.2.0
         with:
           endpoint: ${{ secrets.TEST_REGISTRY }}
           access-token: ${{ secrets.TEST_REGISTRY_ACCESS_TOKEN }} # Or "developer-sk: ${{ secrets.ABTNODE_DEV_TEST_SK }}"
