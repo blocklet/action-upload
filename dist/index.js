@@ -8931,16 +8931,27 @@ const core = __nccwpck_require__(9699);
 const shell = __nccwpck_require__(6288);
 
 try {
+  console.log('Uploading using github action');
   const endpoint = core.getInput('endpoint');
   const accessToken = core.getInput('access-token');
-  shell.exec(`blocklet config set registry ${endpoint}`);
+  const configRes = shell.exec(`blocklet config set registry ${endpoint}`);
+  if (configRes.code !== 0) {
+    throw new Error(configRes.stderr);
+  }
 
   if (accessToken) {
-    shell.exec(`blocklet upload --access-token ${accessToken}`);
+    const accessTokenRes = shell.exec(`blocklet upload --secret-key ${accessToken}`);
+    if (accessTokenRes.code !== 0) {
+      throw new Error(accessTokenRes.stderr);
+    }
   } else {
     const developerSk = core.getInput('developer-sk');
-    shell.exec(`blocklet publish --developer-sk ${developerSk}`);
+    const developerSkRes = shell.exec(`blocklet publish --developer-sk ${developerSk}`);
+    if (developerSkRes.code !== 0) {
+      throw new Error(developerSkRes.stderr);
+    }
   }
+  console.log(`Upload blocklet to ${endpoint} success!`);
 } catch (error) {
   core.setFailed(error.message);
 }
