@@ -2980,11 +2980,11 @@ const exec = __nccwpck_require__(922);
 
   try {
     await exec.exec('pwd');
-    await exec.exec('ls');
+    await exec.exec('ls -a');
     console.log('Uploading using github action');
     const endpoint = core.getInput('endpoint');
     const accessToken = core.getInput('access-token');
-    await exec.exec(`blocklet config set registry ${endpoint}`, {
+    await exec.exec(`blocklet config set registry ${endpoint}`, [], {
       listeners: {
         stderr(err) {
           throw new Error(err.toString());
@@ -2993,7 +2993,7 @@ const exec = __nccwpck_require__(922);
     });
 
     if (accessToken) {
-      exec.exec(`blocklet upload --secret-key ${accessToken}`, {
+      exec.exec(`blocklet upload --secret-key ${accessToken}`, [], {
         listeners: {
           stderr(err) {
             throw new Error(err.toString());
@@ -3002,7 +3002,7 @@ const exec = __nccwpck_require__(922);
       });
     } else {
       const developerSk = core.getInput('developer-sk');
-      exec.exec(`blocklet publish --developer-sk ${developerSk}`, {
+      exec.exec(`blocklet publish --developer-sk ${developerSk}`, [], {
         listeners: {
           stderr(err) {
             throw new Error(err.toString());
