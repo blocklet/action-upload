@@ -1,6 +1,11 @@
 const core = require('@actions/core');
 const shell = require('shelljs');
 
+const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
+if (!fs.existsSync(file)) {
+  throw new Error('Missing file at .blocklet/release/blocklet.json');
+}
+
 try {
   console.log('Uploading using github action');
   const endpoint = core.getInput('endpoint');
