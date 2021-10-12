@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const core = require('@actions/core');
-const shell = require('shelljs');
+const exec = require('@actions/exec');
 
 const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
 if (!fs.existsSync(file)) {
@@ -9,25 +9,36 @@ if (!fs.existsSync(file)) {
 }
 
 try {
+  await exec.exec('pwd');
+  await exec.exec('ls');
   console.log('Uploading using github action');
   const endpoint = core.getInput('endpoint');
   const accessToken = core.getInput('access-token');
-  const configRes = shell.exec(`blocklet config set registry ${endpoint}`);
-  if (configRes.code !== 0) {
-    throw new Error(configRes.stderr);
-  }
+  await exec.exec(`blocklet config set registry ${endpoint}`, {
+    listeners: {
+      stderr(err) {
+        throw new Error(err.toString());
+      },
+    },
+  });
 
   if (accessToken) {
-    const accessTokenRes = shell.exec(`blocklet upload --secret-key ${accessToken}`);
-    if (accessTokenRes.code !== 0) {
-      throw new Error(accessTokenRes.stderr);
-    }
+    exec.exec(`blocklet upload --secret-key ${accessToken}`, {
+      listeners: {
+        stderr(err) {
+          throw new Error(err.toString());
+        },
+      },
+    });
   } else {
     const developerSk = core.getInput('developer-sk');
-    const developerSkRes = shell.exec(`blocklet publish --developer-sk ${developerSk}`);
-    if (developerSkRes.code !== 0) {
-      throw new Error(developerSkRes.stderr);
-    }
+    exec.exec(`blocklet publish --developer-sk ${developerSk}`, {
+      listeners: {
+        stderr(err) {
+          throw new Error(err.toString());
+        },
+      },
+    });
   }
   console.log(`Upload blocklet to ${endpoint} success!`);
 } catch (error) {
