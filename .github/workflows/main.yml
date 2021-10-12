@@ -34,7 +34,7 @@ jobs:
           git config --local user.email "bot@arcblock.io"
           git add dist
           git commit -m "Github action build"
-          git tag -a ${{ steps.package-version.outputs.current-version}} -m "Release ${{ steps.package-version.outputs.current-version}}
+          git tag -a ${{ steps.package-version.outputs.current-version}} -m "Release ${{ steps.package-version.outputs.current-version}}"
           git push --follow-tags
 
       - name: Release to Github
