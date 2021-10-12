@@ -25,8 +25,8 @@ jobs:
         run: yarn build
 
       - name: Get npm version
-          id: package-version
-          uses: martinbeentjes/npm-get-version-action@master
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
 
       - name: Publish dist
         run: |
