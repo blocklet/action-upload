@@ -2979,8 +2979,6 @@ const exec = __nccwpck_require__(922);
   }
 
   try {
-    await exec.exec('pwd');
-    await exec.exec('ls -a');
     console.log('Uploading using github action');
     const endpoint = core.getInput('endpoint');
     const accessToken = core.getInput('access-token');
