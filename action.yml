@@ -1,0 +1,15 @@
+name: 'Upload blocklet'
+description: 'Upload blocklet to blocklet registry'
+inputs:
+  endpoint:
+    description: 'Endpoint of blocklet registry'
+    required: true
+  access-token:
+    description: 'Access token of blocklet registry'
+    required: false
+  developer-sk:
+    description: 'Developer-sk of blocklet registry'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
