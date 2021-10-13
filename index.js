@@ -4,7 +4,7 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 
 const skip = core.getInput('skip');
-if (skip) {
+if (skip === 'true') {
   console.log('Skip upload to registry action');
   return;
 }
