@@ -2972,6 +2972,12 @@ const path = __nccwpck_require__(622);
 const core = __nccwpck_require__(699);
 const exec = __nccwpck_require__(922);
 
+const skip = core.getInput('skip');
+if (skip) {
+  console.log('Skip upload to registry action');
+  return;
+}
+
 (async () => {
   const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
   if (!fs.existsSync(file)) {
@@ -2980,8 +2986,12 @@ const exec = __nccwpck_require__(922);
 
   try {
     console.log('Uploading using github action');
-    const endpoint = core.getInput('endpoint');
+    const endpoint = core.getInput('endpoint', { required: true });
     const accessToken = core.getInput('access-token');
+    const developerSk = core.getInput('developer-sk');
+    if (!(accessToken || developerSk)) {
+      throw new Error('Missing access token or developer sk');
+    }
     await exec.exec(`blocklet config set registry ${endpoint}`, [], {
       listeners: {
         stderr(err) {
@@ -2999,7 +3009,6 @@ const exec = __nccwpck_require__(922);
         },
       });
     } else {
-      const developerSk = core.getInput('developer-sk');
       exec.exec(`blocklet publish --developer-sk ${developerSk}`, [], {
         listeners: {
           stderr(err) {
