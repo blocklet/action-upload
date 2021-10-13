@@ -2973,7 +2973,7 @@ const core = __nccwpck_require__(699);
 const exec = __nccwpck_require__(922);
 
 const skip = core.getInput('skip');
-if (skip) {
+if (skip === 'true') {
   console.log('Skip upload to registry action');
   return;
 }
