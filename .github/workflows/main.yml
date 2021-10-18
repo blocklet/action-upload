@@ -21,7 +21,7 @@ jobs:
         uses: c-hive/gha-yarn-cache@v2
 
       - name: Install dependencies
-        uses: |
+        run: |
           yarn
           yarn global add @vercel/ncc
 
