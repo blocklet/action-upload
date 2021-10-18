@@ -1,6 +1,6 @@
 {
   "name": "action-upload",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Github action for upload blocklet to blocklet registry",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,6 @@
   "homepage": "https://github.com/blocklet/action-upload#readme",
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "@actions/exec": "^1.1.0"
+    "shelljs": "^0.8.4"
   }
 }

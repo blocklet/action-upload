@@ -10,6 +10,14 @@ inputs:
   developer-sk:
     description: 'Developer-sk of blocklet registry'
     required: false
+  file-path:
+    description: 'blocklet.json path'
+    default: .blocklet/release/blocklet.json
+    required: false
+  workgin-directory:
+    description: 'Working directory'
+    default: ./
+    required: false
   skip:
     description: 'Skip action'
     default: false
