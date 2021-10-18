@@ -10,7 +10,7 @@ if (skip === 'true') {
 }
 
 (async () => {
-  const workingDirectory = core.getInput('workgin-directory');
+  const workingDirectory = core.getInput('working-directory');
   const endpoint = core.getInput('endpoint', { required: true });
   const accessToken = core.getInput('access-token');
   const developerSk = core.getInput('developer-sk');
