@@ -8932,6 +8932,15 @@ const path = __nccwpck_require__(5622);
 const core = __nccwpck_require__(9699);
 const shell = __nccwpck_require__(6288);
 
+async function sendSlackMessage(webhook, data) {
+  if (webhook) {
+    await axios.post(webhook, data);
+  }
+}
+function printAble(data) {
+  return data.split(' ');
+}
+
 const skip = core.getInput('skip');
 if (skip === 'true') {
   console.log('Skip upload to registry action');
@@ -8941,8 +8950,8 @@ if (skip === 'true') {
 (async () => {
   const workingDirectory = core.getInput('working-directory');
   const endpoint = core.getInput('endpoint', { required: true });
-  const accessToken = core.getInput('access-token');
-  const developerSk = core.getInput('developer-sk');
+  const slackWebhook = core.getInput('slack-webhook');
+  const accessToken = core.getInput('access-token') || core.getInput('developer-sk');
   const filePath = core.getInput('file-path');
 
   try {
@@ -8955,9 +8964,10 @@ if (skip === 'true') {
     if (!fs.existsSync(file)) {
       throw new Error('Missing file at .blocklet/release/blocklet.json');
     }
+    const { version, name } = JSON.parse(fs.readFileSync(file, 'utf-8'));
     console.log('Uploading using github action');
 
-    if (!(accessToken || developerSk)) {
+    if (!accessToken) {
       throw new Error('Missing access token or developer sk');
     }
     const configRes = shell.exec(`blocklet config set registry ${endpoint}`);
@@ -8965,18 +8975,15 @@ if (skip === 'true') {
       throw new Error(`Failed to set registry: ${configRes.stderr}`);
     }
 
-    if (accessToken) {
-      const uploadRes = shell.exec(`blocklet upload ${file} --access-token ${accessToken}`);
-      if (uploadRes.code !== 0) {
-        throw new Error(`Failed to upload: ${uploadRes.stderr}`);
-      }
-    } else {
-      const publishRes = shell.exec(`blocklet publish ${file} --developer-sk ${developerSk}`);
-      if (publishRes.code !== 0) {
-        throw new Error(`Failed to publish: ${publishRes.stderr}`);
-      }
+    const uploadRes = shell.exec(`blocklet upload ${file} --access-token ${accessToken}`);
+    if (uploadRes.code !== 0) {
+      throw new Error(`Failed to upload: ${uploadRes.stderr}`);
     }
     console.log(`Upload blocklet to ${endpoint} success!`);
+
+    await sendSlackMessage(slackWebhook, {
+      text: `${name} v${version} was successfully upload to ${printAble(endpoint)}`,
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
