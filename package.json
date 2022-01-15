@@ -20,6 +20,6 @@
   "homepage": "https://github.com/blocklet/action-upload#readme",
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   }
 }
