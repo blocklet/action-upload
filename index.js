@@ -19,13 +19,13 @@ if (skip === 'true') {
 }
 
 (async () => {
-  const workingDirectory = core.getInput('working-directory');
-  const endpoint = core.getInput('endpoint', { required: true });
-  const slackWebhook = core.getInput('slack-webhook');
-  const accessToken = core.getInput('access-token') || core.getInput('developer-sk');
-  const filePath = core.getInput('file-path');
-
   try {
+    const workingDirectory = core.getInput('working-directory');
+    const endpoint = core.getInput('endpoint', { required: true });
+    const slackWebhook = core.getInput('slack-webhook');
+    const accessToken = core.getInput('access-token') || core.getInput('developer-sk');
+    const filePath = core.getInput('file-path');
+
     const cdRes = shell.cd(workingDirectory);
     if (cdRes.code !== 0) {
       throw new Error(`Failed to change directory to ${workingDirectory}`);

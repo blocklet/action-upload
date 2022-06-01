@@ -1,11 +1,12 @@
 {
   "name": "action-upload",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Github action for upload blocklet to blocklet registry",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "ncc build index.js --license licenses.txt"
+    "build": "ncc build index.js --license licenses.txt",
+    "preinstall": "npx only-allow pnpm"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,7 @@
   },
   "homepage": "https://github.com/blocklet/action-upload#readme",
   "dependencies": {
-    "@actions/core": "^1.6.0",
-    "shelljs": "^0.8.4"
+    "@actions/core": "^1.8.2",
+    "shelljs": "^0.8.5"
   }
 }
