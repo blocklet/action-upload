@@ -25,6 +25,7 @@ if (skip === 'true') {
     const slackWebhook = core.getInput('slack-webhook');
     const accessToken = core.getInput('access-token') || core.getInput('developer-sk');
     const filePath = core.getInput('file-path');
+    const developerDid = core.getInput('developer-did');
 
     const cdRes = shell.cd(workingDirectory);
     if (cdRes.code !== 0) {
@@ -44,6 +45,12 @@ if (skip === 'true') {
     const configRes = shell.exec(`blocklet config set registry ${endpoint}`);
     if (configRes.code !== 0) {
       throw new Error(`Failed to set registry: ${configRes.stderr}`);
+    }
+    if (developerDid) {
+      const configDidRes = shell.exec(`blocklet config set developerDid ${developerDid}`);
+      if (configDidRes.code !== 0) {
+        throw new Error(`Failed to set registry: ${configDidRes.stderr}`);
+      }
     }
 
     const uploadRes = shell.exec(`blocklet upload ${file} --access-token ${accessToken}`);
